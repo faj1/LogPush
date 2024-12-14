@@ -3,5 +3,6 @@
   "UdpServerHost": "127.0.0.1",
   "Port":9292,
   "debug":true,
-  "app_id": 34
+  "app_id": 34,
+  "push_type":"udp"
 }

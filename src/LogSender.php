@@ -13,6 +13,8 @@ class LogSender
 
     private static int $app_id = 0;
 
+    private static string $push_type = '';
+
     /**
      * 发送日志数据
      *
@@ -31,10 +33,10 @@ class LogSender
     ): void {
         try {
             self::initializeConfig();
-            var_dump(self::$staticServerUrl, self::$staticUdpServerUrl, self::$debug);
             if(self::$debug){
                 echo '配置的服务器链接为:'.self::$staticServerUrl.PHP_EOL;
                 echo '配置的UDP服务器信息为:'.json_encode(self::$staticServerUrl).PHP_EOL;
+                var_dump(self::$staticServerUrl, self::$staticUdpServerUrl, self::$debug);
             }
             $logData = [
                 'log_date' => date('Y-m-d'),
@@ -56,11 +58,17 @@ class LogSender
             ];
             $logPush = new LogPush(self::$staticServerUrl, self::$staticUdpServerUrl, self::$debug);
             $logData['app_id'] = self::$app_id;
-            if (extension_loaded('swoole')) {
+            if(self::$push_type === "udp"){
+                $logPush->UdpSendLog($logData);
+            }else{
+                $logPush->sendLog($logData);
+            }
+
+            /*if (extension_loaded('swoole')) {
                 $logPush->UdpSendLog($logData);
             } else {
                 $logPush->sendLog($logData);
-            }
+            }*/
         } catch (\Throwable | Exception $e) {
             if(self::$debug){
                 echo '出错了:'.$e->getMessage()."|".$e->getFile()."|".$e->getLine().PHP_EOL;
@@ -97,6 +105,10 @@ class LogSender
             if (!isset($config['app_id'] )) {
                 throw new Exception(/** @lang text */ '缺少必备的配置项: app_id');
             }
+            if (!isset($config['push_type'] )) {
+                throw new Exception(/** @lang text */ '缺少必备的配置项: push_type');
+            }
+            self::$push_type = $config['push_type'];
             self::$app_id = $config['app_id'];
             self::$staticUdpServerUrl = [
                 'host' => $config['UdpServerHost'],
