@@ -19,7 +19,6 @@ class LogSender
      * @param string $level 日志级别
      * @param string $application 应用名称
      * @param string $environment 运行环境
-     * @throws Exception
      */
     public static function sendLogData(
         Exception $exception,
@@ -28,9 +27,8 @@ class LogSender
         string $application = 'default_app',
         string $environment = 'production'
     ): void {
-        self::initializeConfig();
-
         try {
+            self::initializeConfig();
             $logData = [
                 'log_date' => date('Y-m-d'),
                 'timestamp' => date('Y-m-d H:i:s'),
@@ -50,6 +48,7 @@ class LogSender
                 'line_number' => $exception->getLine(),
             ];
             $logPush = new LogPush(self::$staticServerUrl, self::$staticUdpServerUrl, self::$debug);
+            var_dump(self::$staticServerUrl, self::$staticUdpServerUrl, self::$debug);
             if(self::$debug){
                 echo '配置的服务器链接为:'.self::$staticServerUrl.PHP_EOL;
                 echo '配置的UDP服务器信息为:'.json_encode(self::$staticServerUrl).PHP_EOL;
@@ -60,7 +59,7 @@ class LogSender
             } else {
                 $logPush->sendLog($logData);
             }
-        } catch (\Throwable $e) {
+        } catch (\Throwable | Exception $e) {
             if(self::$debug){
                 echo '出错了:'.$e->getMessage().PHP_EOL;
             }
