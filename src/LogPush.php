@@ -99,23 +99,27 @@ class LogPush
 
     public function UdpSendLog(array $logData): void
     {
-        if($this->debug){
-            echo '服务器链接:'.$this->UdpServer['host']. PHP_EOL;
-            echo '服务器端口:'.$this->UdpServer['port']. PHP_EOL;
-            echo "发送的内容文本:".json_encode($logData).PHP_EOL;
-        }
+
         try {
             // 压缩数据
             $compressed = gzcompress(json_encode($logData));
-            echo "压缩后的数据: " . $compressed . "\n";
+            if($this->debug){
+                echo '服务器链接:'.$this->UdpServer['host']. PHP_EOL;
+                echo '服务器端口:'.$this->UdpServer['port']. PHP_EOL;
+                echo "发送的内容文本:".json_encode($logData).PHP_EOL;
+                echo "压缩后的数据: " . $compressed . "\n";
+            }
+
             run(function () use ($compressed) {
                 $client = new Client(SWOOLE_SOCK_UDP);
                 if (!$client->connect($this->UdpServer['host'], $this->UdpServer['port'], 0.5))
                 {
-                    echo "connect failed. Error: {$client->errCode}\n";
+                    //echo "connect failed. Error: {$client->errCode}\n";
+                    if($this->debug){
+                        echo "connect failed. Error: {$client->errCode}\n";
+                    }
                 }
                 $client->send($compressed);
-                echo $client->recv();
                 $client->close();
             });
         } catch (\Exception $e) {
