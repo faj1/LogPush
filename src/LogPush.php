@@ -77,6 +77,7 @@ class LogPush
 
         // 如果调试模式开启，输出调试信息
         if ($this->debug) {
+            echo '推送的日志内容:'. json_encode($data).PHP_EOL;
             // 记录发送的请求内容
             error_log("Request URL: " . $url);
             error_log("Request Data: " . json_encode($data));
