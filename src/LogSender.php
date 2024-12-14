@@ -7,7 +7,7 @@ class LogSender
 
 
 
-    private static string $staticserverUrl = "";
+    private static string $StaticServerUrl = "";
 
 
     public static  function sendLogData(\Exception $exception, array $context = [], string $level = 'ERROR', string $application = 'default_app', string $environment = 'production'): void
@@ -30,7 +30,7 @@ class LogSender
             'file_name'   => $exception->getFile(),
             'line_number' => $exception->getLine(),
         ];
-        if(!self::$staticserverUrl){
+        if(!self::$StaticServerUrl){
             // 获取用户项目的根目录路径
             $projectRoot = dirname(__DIR__, 2); // 根据实际路径调整，假设当前库代码在项目的 vendor/your-vendor/your-package/ 目录下
             $configFile = $projectRoot . '/config.json';
@@ -52,7 +52,7 @@ class LogSender
 
 
 
-        $LogSender = new LogSender();
+
 
 
 
