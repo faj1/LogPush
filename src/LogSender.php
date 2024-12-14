@@ -18,14 +18,14 @@ class LogSender
     /**
      * 发送日志数据
      *
-     * @param Exception $exception 异常对象
+     * @param Exception|null $exception 异常对象
      * @param array $context 日志上下文
      * @param string $level 日志级别
      * @param string $application 应用名称
      * @param string $environment 运行环境
      */
     public static function sendLogData(
-        Exception $exception,
+        Exception $exception = null,
         array $context = [],
         string $level = 'ERROR',
         string $application = 'default_app',
@@ -42,7 +42,6 @@ class LogSender
                 'log_date' => date('Y-m-d'),
                 'timestamp' => date('Y-m-d H:i:s'),
                 'level' => $level,
-                'message' => $exception->getMessage(),
                 'application' => $application,
                 'module' => null,
                 'logger' => null,
@@ -51,11 +50,15 @@ class LogSender
                 'user_id' => $context['user_id'] ?? null,
                 'request_id' => $context['request_id'] ?? null,
                 'context' => json_encode($context, JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR),
-                'exception' => $exception->getTraceAsString(),
                 'environment' => $environment,
-                'file_name' => $exception->getFile(),
-                'line_number' => $exception->getLine(),
             ];
+
+            if($exception){
+                $logData['message'] = $exception->getMessage();
+                $logData['exception'] = $exception->getTraceAsString();
+                $logData['file_name'] = $exception->getFile();
+                $logData['line_number'] = $exception->getLine();
+            }
             $logPush = new LogPush(self::$staticServerUrl, self::$staticUdpServerUrl, self::$debug);
             $logData['app_id'] = self::$app_id;
             if(self::$push_type === "udp"){
