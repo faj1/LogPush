@@ -6,7 +6,9 @@ class Installer
 {
     public static function postInstall($event): void
     {
+        echo '开始处理配置文件'.PHP_EOL;
         $io = $event->getIO();
+
         $configFile = getcwd() . '/LogConfig.json';
 
         // 检查配置文件是否存在
