@@ -8,6 +8,7 @@ class LogSender
 
 
     private static string $StaticServerUrl = "";
+    private static string $UdpServerUrl = "";
 
 
     public static  function sendLogData(\Exception $exception, array $context = [], string $level = 'ERROR', string $application = 'default_app', string $environment = 'production'): void
@@ -30,21 +31,30 @@ class LogSender
             'file_name'   => $exception->getFile(),
             'line_number' => $exception->getLine(),
         ];
-        if(!self::$StaticServerUrl){
+        if(!self::$StaticServerUrl or !self::$UdpServerUrl){
             // 获取用户项目的根目录路径
             $projectRoot = dirname(__DIR__, 4); // 根据实际路径调整，假设当前库代码在项目的 vendor/your-vendor/your-package/ 目录下
-            var_dump($projectRoot);
             $configFile = $projectRoot . '/LogConfig.json';
-
             if (file_exists($configFile)) {
                 $config = json_decode(file_get_contents($configFile), true);
                 if (json_last_error() !== JSON_ERROR_NONE) {
                     throw new \RuntimeException('配置文件 config.json 格式错误: ' . json_last_error_msg());
                 }
+                if(!isset($config['ServerUrl'])){
+                    throw new \RuntimeException('缺少必备的配置项:ServerUrl');
+                }else{
+                    self::$StaticServerUrl = $config['ServerUrl'];
+                }
+                if(!isset($config['UdpServerUrl'])){
+                    throw new \RuntimeException('缺少必备的配置项:UdpServerUrl');
+                }else{
+                    self::$UdpServerUrl = $config['UdpServerUrl'];
+                }
+
                 // 使用配置数据
                 var_dump($config);
             } else {
-                throw new \RuntimeException('配置文件 config.json 不存在。');
+                throw new \RuntimeException('配置文件 config.json 不存在,获取到的根目录路径为:'.$projectRoot);
             }
         }
 
