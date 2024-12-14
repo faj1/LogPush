@@ -17,7 +17,8 @@ class Installer
             if ($io->askConfirmation('配置文件 config.json 不存在。是否要生成一个默认配置文件？[Y/n] ', true)) {
                 // 从模板生成配置文件
                 $defaultConfig = [
-                    "serverUrl" => "http://127.0.0.1:8000"
+                    "ServerUrl" => "http://127.0.0.1:8000",
+                    "UdpServerUrl"=>"http://127.0.0.1:8000"
                 ];
                 file_put_contents($configFile, json_encode($defaultConfig, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
                 $io->write('<info>默认配置文件已生成: LogConfig.json</info>');
