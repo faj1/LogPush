@@ -32,7 +32,7 @@ class LogSender
         ];
         if(!self::$StaticServerUrl){
             // 获取用户项目的根目录路径
-            $projectRoot = dirname(__DIR__, 2); // 根据实际路径调整，假设当前库代码在项目的 vendor/your-vendor/your-package/ 目录下
+            $projectRoot = dirname(__DIR__, 4); // 根据实际路径调整，假设当前库代码在项目的 vendor/your-vendor/your-package/ 目录下
             var_dump($projectRoot);
             $configFile = $projectRoot . '/LogConfig.json';
 
