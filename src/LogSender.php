@@ -51,6 +51,11 @@ class LogSender
                 'request_id' => $context['request_id'] ?? null,
                 'context' => json_encode($context, JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR),
                 'environment' => $environment,
+                "message"=>null,
+                "exception"=>null,
+                "file_name"=>null,
+                "line_number"=>null,
+
             ];
 
             if($exception){
