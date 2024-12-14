@@ -36,7 +36,7 @@ class LogSender
             if(self::$debug){
                 echo '配置的服务器链接为:'.self::$staticServerUrl.PHP_EOL;
                 echo '配置的UDP服务器信息为:'.json_encode(self::$staticServerUrl).PHP_EOL;
-                var_dump(self::$staticServerUrl, self::$staticUdpServerUrl, self::$debug);
+                //var_dump(self::$staticServerUrl, self::$staticUdpServerUrl, self::$debug);
             }
             $logData = [
                 'log_date' => date('Y-m-d'),
