@@ -11,6 +11,8 @@ class LogSender
     private static array $staticUdpServerUrl = [];
     private static bool $debug = false;
 
+    private static int $app_id = 0;
+
     /**
      * 发送日志数据
      *
@@ -53,8 +55,7 @@ class LogSender
                 'line_number' => $exception->getLine(),
             ];
             $logPush = new LogPush(self::$staticServerUrl, self::$staticUdpServerUrl, self::$debug);
-
-
+            $logData['app_id'] = self::$app_id;
             if (extension_loaded('swoole')) {
                 $logPush->UdpSendLog($logData);
             } else {
@@ -93,6 +94,10 @@ class LogSender
             if (!isset($config['UdpServerHost']) || !isset($config['Port'])) {
                 throw new Exception('缺少必备的配置项: UdpServerHost 或 Port');
             }
+            if (!isset($config['app_id'] )) {
+                throw new Exception(/** @lang text */ '缺少必备的配置项: app_id');
+            }
+            self::$app_id = $config['app_id'];
             self::$staticUdpServerUrl = [
                 'host' => $config['UdpServerHost'],
                 'port' => $config['Port'],

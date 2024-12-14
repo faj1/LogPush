@@ -13,6 +13,7 @@ class LogPush
     private array $UdpServer; // 服务器接收日志的接口地址
 
     private bool $debug = false;
+
     /**
      * 构造函数
      * @param string $serverUrl 日志接收服务器的 URL（例如：http://example.com/api/logs）
@@ -22,6 +23,7 @@ class LogPush
         $this->serverUrl = $serverUrl;
         $this->UdpServer = $UdpServer;
         $this->debug = $debug;
+
     }
 
 
