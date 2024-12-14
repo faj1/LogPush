@@ -13,5 +13,10 @@
     "require": {
       "ext-curl": "*",
       "ext-json": "*"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "Faj1\\Push\\Installer::postInstall"
+        ]
     }
 }
