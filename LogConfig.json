@@ -1,8 +1,8 @@
 {
-  "ServerUrl": "http://127.0.0.1:8000",
+  "ServerUrl": "http://0.0.0.0:7871/api/log/add",
   "UdpServerHost": "127.0.0.1",
   "Port":9292,
-  "debug":true,
+  "debug":false,
   "app_id": 34,
-  "push_type":"udp"
+  "push_type":"http"
 }
