@@ -1,0 +1,17 @@
+{
+    "name": "faj1/push",
+    "autoload": {
+        "psr-4": {
+            "Faj1\\Push\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "777"
+        }
+    ],
+    "require": {
+      "ext-curl": "*",
+      "ext-json": "*"
+    }
+}
