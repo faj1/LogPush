@@ -62,7 +62,7 @@ class LogSender
             }
         } catch (\Throwable | Exception $e) {
             if(self::$debug){
-                echo '出错了:'.$e->getMessage().PHP_EOL;
+                echo '出错了:'.$e->getMessage()."|".$e->getFile()."|".$e->getLine().PHP_EOL;
             }
         }
     }
