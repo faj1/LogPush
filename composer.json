@@ -1,13 +1,12 @@
 {
     "name": "faj1/push",
+    "description": "一个日志客户端库",
     "autoload": {
         "psr-4": {
             "Faj1\\Push\\": "src/"
         }
     },
-    "version": "1.0.0",
     "license": "MIT",
-
     "authors": [
         {
             "name": "777"
