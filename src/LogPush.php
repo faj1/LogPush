@@ -51,23 +51,46 @@ class LogPush
     {
         // 初始化 cURL 会话
         $ch = curl_init();
+
         // 配置请求选项
         curl_setopt($ch, CURLOPT_URL, $url); // 请求地址
-        curl_setopt($ch, CURLOPT_POST, true); // POST 请求
+        curl_setopt($ch, CURLOPT_POST, true); // 设置为 POST 请求
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data)); // 使用 JSON 格式发送数据
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, false); // 不需要返回响应内容
-        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 100); // 超时时间（异步场景下设置尽量短）
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // 返回响应内容（便于调试时查看）
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 100); // 设置超时时间（异步场景下建议设置较短时间）
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json', // 设置请求头，标明内容类型为 JSON
+            'Content-Type: application/json', // 设置请求头，标注内容类型为 JSON
         ]);
-        // 使用非阻塞模式发送请求
-        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
-        curl_setopt($ch, CURLOPT_FORBID_REUSE, true);
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true); // 强制使用新的连接
+        curl_setopt($ch, CURLOPT_FORBID_REUSE, true); // 禁止重用连接
+
         // 执行 cURL 请求
-        curl_exec($ch);
-        // 忽略请求结果和可能出现的错误，确保不抛出异常
+        $response = curl_exec($ch);
+
+        // 检查是否有错误
+        $hasError = curl_errno($ch);    // 判断是否有错误
+        $errorMsg = $hasError ? curl_error($ch) : null; // 获取错误信息
+
+        // 如果调试模式开启，输出调试信息
+        if ($this->debug) {
+            // 记录发送的请求内容
+            error_log("Request URL: " . $url);
+            error_log("Request Data: " . json_encode($data));
+
+            // 记录响应和错误信息
+            if ($hasError) {
+                error_log("CURL Error: " . $errorMsg); // 输出错误信息
+            } else {
+                error_log("CURL Response: " . $response); // 输出响应值
+            }
+        }
+
+        // 关闭 cURL 请求
         curl_close($ch);
+
+        // 此处无需返回响应值，因为函数定义为 void，但调试中已记录所有必要信息
     }
+
 
     public function UdpSendLog(array $logData): void
     {
