@@ -1,0 +1,5 @@
+{
+  "ServerUrl": "http://127.0.0.1:8000",
+  "UdpServerHost": "127.0.0.1",
+  "Port":9092
+}
