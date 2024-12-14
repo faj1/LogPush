@@ -16,8 +16,17 @@
       "ext-json": "*"
     },
     "scripts": {
+        "pre-install-cmd": [
+
+        ],
         "post-install-cmd": [
             "Faj1\\Push\\Installer::postInstall"
+        ],
+        "post-update-cmd": [
+            "Faj1\\Push\\Installer::postInstall"
+        ],
+        "post-autoload-dump": [
+
         ]
     }
 }
