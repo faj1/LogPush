@@ -55,7 +55,8 @@ class LogSender
                 "exception"=>null,
                 "file_name"=>null,
                 "line_number"=>null,
-
+                "created_at"=>date('Y-m-d H:i:s'),
+                "updated_at"=>date('Y-m-d H:i:s')
             ];
 
             if($exception){
