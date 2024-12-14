@@ -2,5 +2,6 @@
   "ServerUrl": "http://127.0.0.1:8000",
   "UdpServerHost": "127.0.0.1",
   "Port":9292,
-  "debug":false
+  "debug":true,
+  "app_id": 34
 }
