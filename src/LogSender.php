@@ -29,6 +29,11 @@ class LogSender
     ): void {
         try {
             self::initializeConfig();
+            var_dump(self::$staticServerUrl, self::$staticUdpServerUrl, self::$debug);
+            if(self::$debug){
+                echo '配置的服务器链接为:'.self::$staticServerUrl.PHP_EOL;
+                echo '配置的UDP服务器信息为:'.json_encode(self::$staticServerUrl).PHP_EOL;
+            }
             $logData = [
                 'log_date' => date('Y-m-d'),
                 'timestamp' => date('Y-m-d H:i:s'),
@@ -48,11 +53,7 @@ class LogSender
                 'line_number' => $exception->getLine(),
             ];
             $logPush = new LogPush(self::$staticServerUrl, self::$staticUdpServerUrl, self::$debug);
-            var_dump(self::$staticServerUrl, self::$staticUdpServerUrl, self::$debug);
-            if(self::$debug){
-                echo '配置的服务器链接为:'.self::$staticServerUrl.PHP_EOL;
-                echo '配置的UDP服务器信息为:'.json_encode(self::$staticServerUrl).PHP_EOL;
-            }
+
 
             if (extension_loaded('swoole')) {
                 $logPush->UdpSendLog($logData);
