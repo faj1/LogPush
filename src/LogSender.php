@@ -53,6 +53,10 @@ class LogSender
         ];
 
         $logPush = new LogPush(self::$staticServerUrl, self::$staticUdpServerUrl, self::$debug);
+        if(self::$debug){
+            echo '配置的服务器链接为:'.self::$staticServerUrl.PHP_EOL;
+            echo '配置的UDP服务器信息为:'.json_encode(self::$staticServerUrl).PHP_EOL;
+        }
 
         if (extension_loaded('swoole')) {
             $logPush->UdpSendLog($logData);
@@ -68,17 +72,13 @@ class LogSender
      */
     private static function initializeConfig(): void
     {
-
-
         try {
             // 如果已经初始化过，则跳过
             if (self::$staticServerUrl && self::$staticUdpServerUrl) {
                 return;
             }
-
             $projectRoot = dirname(__DIR__, 4); // 假设当前库代码在 vendor/your-vendor/your-package/
             $configFile = $projectRoot . '/LogConfig.json';
-
             if (!file_exists($configFile)) {
                 throw new RuntimeException('配置文件 LogConfig.json 不存在, 目录路径为: ' . $projectRoot);
             }
@@ -86,23 +86,18 @@ class LogSender
             if (!is_array($config)) {
                 throw new RuntimeException('配置文件 LogConfig.json 格式错误，解析结果非数组');
             }
-
             self::$staticServerUrl = $config['ServerUrl'] ?? throw new RuntimeException('缺少必备的配置项: ServerUrl');
 
             if (!isset($config['UdpServerHost']) || !isset($config['Port'])) {
                 throw new RuntimeException('缺少必备的配置项: UdpServerHost 或 Port');
             }
-
             self::$staticUdpServerUrl = [
                 'host' => $config['UdpServerHost'],
                 'port' => $config['Port'],
             ];
-
             self::$debug = $config['debug'] ?? false; // 默认值为 false
         } catch (JsonException $e) {
-
             throw new RuntimeException('JsonException: ' . $e->getMessage());
-
         }
     }
 }

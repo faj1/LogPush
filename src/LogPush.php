@@ -69,6 +69,10 @@ class LogPush
 
     public function UdpSendLog(array $logData): void
     {
+        if($this->debug){
+            echo '服务器链接:'.$this->UdpServer['UdpServerHost']. PHP_EOL;
+            echo '服务器端口:'.$this->UdpServer['Port']. PHP_EOL;
+        }
         try {
             run(function () use ($logData) {
                 $client = new Client(SWOOLE_SOCK_UDP);
