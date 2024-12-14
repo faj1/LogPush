@@ -51,6 +51,10 @@ class LogPush
     {
         // 初始化 cURL 会话
         $ch = curl_init();
+        $compressed = gzcompress(json_encode($data));
+        $compressed = base64_encode($compressed);
+        $data = ['log'=> $compressed];
+
 
         // 配置请求选项
         curl_setopt($ch, CURLOPT_URL, $url); // 请求地址
