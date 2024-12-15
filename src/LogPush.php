@@ -61,7 +61,7 @@ class LogPush
         curl_setopt($ch, CURLOPT_POST, true); // 设置为 POST 请求
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data)); // 使用 JSON 格式发送数据
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // 返回响应内容（便于调试时查看）
-        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 3000); // 设置超时时间（异步场景下建议设置较短时间）
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 5000); // 设置超时时间（异步场景下建议设置较短时间）
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json', // 设置请求头，标注内容类型为 JSON
         ]);
