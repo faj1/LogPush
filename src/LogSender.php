@@ -3,7 +3,6 @@
 namespace Faj1\Push;
 
 use Exception;
-use Throwable;
 
 
 class LogSender
@@ -19,7 +18,7 @@ class LogSender
     /**
      * 发送日志数据
      *
-     * @param Exception|null|Throwable $exception 异常对象
+     * @param mixed $exception 异常对象
      * @param array $context 日志上下文
      * @param string $level 日志级别
      * @param string $application 应用名称
@@ -27,7 +26,7 @@ class LogSender
      */
     public static function sendLogData(
         mixed $exception = null,
-        mixed $context = [],
+        array $context = [],
         string $level = 'ERROR',
         string $application = 'default_app',
         string $environment = 'production'
@@ -48,6 +47,9 @@ class LogSender
                 'logger' => null,
                 'thread' => null,
                 'host' => gethostname(),
+                'user_id' => $context['user_id'] ?? null,
+                'request_id' => $context['request_id'] ?? null,
+                'context' => json_encode($context, JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR),
                 'environment' => $environment,
                 "message"=>null,
                 "exception"=>null,
@@ -56,11 +58,7 @@ class LogSender
                 "created_at"=>date('Y-m-d H:i:s'),
                 "updated_at"=>date('Y-m-d H:i:s')
             ];
-            $logData['context'] = json_encode($context, JSON_UNESCAPED_UNICODE);
-            if(is_array($context)){
-                $logData['user_id'] = $context['user_id'] ?? null;
-                $logData['request_id'] = $context['request_id'] ?? null;
-            }
+
             if($exception){
                 $logData['message'] = $exception->getMessage();
                 $logData['exception'] = $exception->getTraceAsString();
@@ -80,7 +78,7 @@ class LogSender
             } else {
                 $logPush->sendLog($logData);
             }*/
-        } catch (Throwable | Exception $e) {
+        } catch (\Throwable | Exception $e) {
             if(self::$debug){
                 echo '出错了:'.$e->getMessage()."|".$e->getFile()."|".$e->getLine().PHP_EOL;
             }
@@ -126,7 +124,7 @@ class LogSender
                 'port' => $config['Port'],
             ];
             self::$debug = $config['debug'] ?? false; // 默认值为 false
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             throw new Exception('JsonException: ' . $e->getMessage());
         }
     }
