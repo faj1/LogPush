@@ -26,7 +26,7 @@ class LogSender
      * @param string $environment 运行环境
      */
     public static function sendLogData(
-        Exception|Throwable $exception = null,
+        mixed $exception = null,
         array $context = [],
         string $level = 'ERROR',
         string $application = 'default_app',
