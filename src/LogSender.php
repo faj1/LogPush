@@ -56,7 +56,7 @@ class LogSender
                 "created_at"=>date('Y-m-d H:i:s'),
                 "updated_at"=>date('Y-m-d H:i:s')
             ];
-            $context['context'] = json_encode($context, JSON_UNESCAPED_UNICODE);
+            $logData['context'] = json_encode($context, JSON_UNESCAPED_UNICODE);
             if(is_array($context)){
                 $logData['user_id'] = $context['user_id'] ?? null;
                 $logData['request_id'] = $context['request_id'] ?? null;
