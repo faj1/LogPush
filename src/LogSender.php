@@ -27,7 +27,7 @@ class LogSender
      */
     public static function sendLogData(
         mixed $exception = null,
-        array $context = [],
+        mixed $context = [],
         string $level = 'ERROR',
         string $application = 'default_app',
         string $environment = 'production'
