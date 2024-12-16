@@ -3,6 +3,7 @@
 namespace Faj1\Push;
 
 use Exception;
+use Throwable;
 
 
 class LogSender
@@ -18,14 +19,14 @@ class LogSender
     /**
      * 发送日志数据
      *
-     * @param Exception|null $exception 异常对象
+     * @param Exception|null|Throwable $exception 异常对象
      * @param array $context 日志上下文
      * @param string $level 日志级别
      * @param string $application 应用名称
      * @param string $environment 运行环境
      */
     public static function sendLogData(
-        Exception $exception = null,
+        Exception|Throwable $exception = null,
         array $context = [],
         string $level = 'ERROR',
         string $application = 'default_app',
@@ -78,7 +79,7 @@ class LogSender
             } else {
                 $logPush->sendLog($logData);
             }*/
-        } catch (\Throwable | Exception $e) {
+        } catch (Throwable | Exception $e) {
             if(self::$debug){
                 echo '出错了:'.$e->getMessage()."|".$e->getFile()."|".$e->getLine().PHP_EOL;
             }
@@ -124,7 +125,7 @@ class LogSender
                 'port' => $config['Port'],
             ];
             self::$debug = $config['debug'] ?? false; // 默认值为 false
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw new Exception('JsonException: ' . $e->getMessage());
         }
     }
