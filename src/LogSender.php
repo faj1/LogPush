@@ -48,9 +48,6 @@ class LogSender
                 'logger' => null,
                 'thread' => null,
                 'host' => gethostname(),
-                'user_id' => $context['user_id'] ?? null,
-                'request_id' => $context['request_id'] ?? null,
-                'context' => json_encode($context, JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR),
                 'environment' => $environment,
                 "message"=>null,
                 "exception"=>null,
@@ -59,7 +56,11 @@ class LogSender
                 "created_at"=>date('Y-m-d H:i:s'),
                 "updated_at"=>date('Y-m-d H:i:s')
             ];
-
+            $context['context'] = json_encode($context, JSON_UNESCAPED_UNICODE);
+            if(is_array($context)){
+                $logData['user_id'] = $context['user_id'] ?? null;
+                $logData['request_id'] = $context['request_id'] ?? null;
+            }
             if($exception){
                 $logData['message'] = $exception->getMessage();
                 $logData['exception'] = $exception->getTraceAsString();
